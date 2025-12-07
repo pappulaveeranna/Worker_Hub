@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Backend base URL
 const API = axios.create({ 
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api' 
+  baseURL: process.env.REACT_APP_API_URL || "https://worker-hub-backend.onrender.com" 
 });
 
 // Attach JWT token if present
