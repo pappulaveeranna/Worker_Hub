@@ -41,7 +41,7 @@ Option 1 - Render.com (Recommended):
 4. Build: cd backend && npm install
 5. Start: cd backend && npm start
 6. Add environment variables:
-   - MONGO_URI=mongodb+srv://pappulaveeranna_db_user:1x2bZb3nIxYMLujf@cluster0.0qfrtjq.mongodb.net/
+   - MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxxx.mongodb.net/workerhub?retryWrites=true&w=majority
    - JWT_SECRET=your_super_secret_jwt_key_here_12345
    - PORT=5000
 
