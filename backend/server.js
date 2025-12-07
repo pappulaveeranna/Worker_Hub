@@ -12,23 +12,41 @@ const reviewRoutes = require("./routes/reviewRoutes.js");
 
 const app = express();
 
-app.use(express.json());
-app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// ✅ CORS configuration – includes your deployed frontend
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+      "http://localhost:3001",
+      "http://127.0.0.1:3001",
+      "https://worker-hub-frontendui.onrender.com", // 🔥 deployed frontend
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-// Add request logging middleware
+// Optional: handle preflight requests explicitly
+app.options("*", cors());
+
+// Parse JSON request bodies
+app.use(express.json());
+
+// 📝 Request logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
   if (req.headers.authorization) {
-    console.log('Auth header present:', req.headers.authorization.substring(0, 20) + '...');
+    console.log(
+      "Auth header present:",
+      req.headers.authorization.substring(0, 20) + "..."
+    );
   }
   next();
 });
 
+// ✅ Connect to MongoDB
 connectDB();
 
 // Base route
@@ -39,14 +57,14 @@ app.get("/", (req, res) => {
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.json({
-    status: 'OK',
+    status: "OK",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || "development",
   });
 });
 
-// API routes
+// ✅ API routes (all prefixed with /api)
 app.use("/api/users", userRoutes);
 app.use("/api/workers", workerRoutes);
 app.use("/api/bookings", bookingRoutes);
@@ -76,6 +94,6 @@ wss.on("connection", (ws) => {
   });
 });
 
-server.listen(PORT, () =>
-  console.log(`✅ Server is running on http://localhost:${PORT}`)
-);
+server.listen(PORT, () => {
+  console.log(`✅ Server is running on http://localhost:${PORT}`);
+});
