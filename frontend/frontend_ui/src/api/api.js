@@ -2,8 +2,9 @@ import axios from 'axios';
 
 // Backend base URL
 const API = axios.create({ 
-  baseURL: process.env.REACT_APP_API_URL || "https://worker-hub-backend.onrender.com" 
+  baseURL: process.env.REACT_APP_API_URL || "https://worker-hub-backend.onrender.com/api" 
 });
+
 
 // Attach JWT token if present
 API.interceptors.request.use((req) => {
